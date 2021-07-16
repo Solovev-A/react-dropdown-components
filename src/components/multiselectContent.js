@@ -10,13 +10,15 @@ flex: 1;
 padding-left: .375rem;
 `;
 
-const MultiselectContent = ({ selected, renderSelectedItem, placeholder }) => {
+const MultiselectContent = ({ selected, renderSelectedItem, onItemRemove, placeholder }) => {
     return (
         <MultiselectContentView>
             {
                 selected.map((item, index) => {
+                    const handleRemoveItem = () => onItemRemove(item);
+
                     return (
-                        <SelectedItem key={index}>
+                        <SelectedItem key={item.id ?? index} onItemRemove={handleRemoveItem}>
                             {renderSelectedItem ? renderSelectedItem(item) : item}
                         </SelectedItem>
                     )
