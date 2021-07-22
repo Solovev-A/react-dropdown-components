@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Input from './input';
 import SelectedItem from './selectedItem';
 
 const MultiselectContentView = styled.div`
@@ -10,21 +9,21 @@ flex: 1;
 padding-left: .375rem;
 `;
 
-const MultiselectContent = ({ selected, renderSelectedItem, onItemRemove, placeholder }) => {
+const MultiselectContent = ({ selected, getSelectedText, onItemRemove, input }) => {
     return (
         <MultiselectContentView>
             {
-                selected.map((item, index) => {
+                selected.map((item) => {
                     const handleRemoveItem = () => onItemRemove(item);
 
                     return (
-                        <SelectedItem key={item.id ?? index} onItemRemove={handleRemoveItem}>
-                            {renderSelectedItem ? renderSelectedItem(item) : item}
+                        <SelectedItem key={getSelectedText(item)} onItemRemove={handleRemoveItem}>
+                            {getSelectedText(item)}
                         </SelectedItem>
                     )
                 })
             }
-            <Input placeholder={selected.length ? null : placeholder} />
+            {input}
         </MultiselectContentView>
     );
 }
