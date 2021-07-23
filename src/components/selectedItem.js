@@ -8,7 +8,6 @@ padding: 0;
 padding-right: .75rem;
 margin-top: calc(.375rem - 2px);
 margin-right: .375rem;
-margin-bottom: 6px;
 color: #495057;
 font-size: 1rem;
 cursor: pointer;

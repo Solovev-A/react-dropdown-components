@@ -7,6 +7,7 @@ import useDropdownPosition from './../hooks/useDropdownPosition'
 import Dropdown from './dropdown';
 import MultiselectContent from './multiselectContent';
 import Input from './input';
+import { filterOptions } from '../utils';
 
 
 
@@ -15,6 +16,7 @@ position: relative;
 min-height: calc(1.5em + .75rem + 2px) !important;
 width: 100%;
 margin: 0;
+padding-bottom: 6px;
 box-sizing: border-box;
 display: flex;
 background-color: #fff;
@@ -34,9 +36,9 @@ ${({ dropdownPosition, isDropdownOpen }) =>
 `;
 
 const Multiselect = ({
-    options,
-    selected,
-    onSelectedChange,
+    options = [],
+    selected = [],
+    onSelectedChange = () => undefined,
     getOptionText = (item) => item,
     getSelectedText = (item) => item,
     dropdownHeight = 300,
@@ -48,22 +50,33 @@ const Multiselect = ({
     const [selectedItems, setSelectedItems] = useState(selected);
     const [pointer, setPointer] = useState(null);
 
-    const innerRef = useOuterClick(() => setIsDropdownOpen(false));
-    const selectBounds = useElementBounds(innerRef);
-    const dropdownPosition = useDropdownPosition(selectBounds, dropdownHeight);
-
-    const handleSearchChange = (search) => {
-        setSearch(search);
-        const regExpSafeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const reg = new RegExp(regExpSafeSearch, 'i');
-        const newSearchResults = options.filter(item => reg.test(getOptionText(item)));
+    const updateSearch = (value) => {
+        setSearch(value);
+        const newSearchResults = filterOptions(options, value, getOptionText);
+        setPointer(newSearchResults.length ? 0 : null);
         setSearchResults(newSearchResults);
     }
+
+    const openDropdown = () => {
+        if (pointer === null && searchResults.length) {
+            setPointer(0);
+        }
+        setIsDropdownOpen(true);
+    }
+
+    const closeDropdown = () => {
+        updateSearch('');
+        setIsDropdownOpen(false);
+    }
+
+    const innerRef = useOuterClick(closeDropdown);
+    const selectBounds = useElementBounds(innerRef);
+    const dropdownPosition = useDropdownPosition(selectBounds, dropdownHeight);
 
     const SearchInput = <Input
         placeholder={selected.length ? null : placeholder}
         value={search}
-        onSearchChange={handleSearchChange}
+        onSearchChange={updateSearch}
     />
 
     const isEqual = (item, another) => {
@@ -97,12 +110,53 @@ const Multiselect = ({
         setPointer(newPointer);
     }
 
+    const handleKeyDown = (event) => {
+        switch (event.key) {
+            case 'ArrowUp':
+                if (!isDropdownOpen) {
+                    setPointer(searchResults.length - 1);
+                    openDropdown();
+                } else {
+                    if (!searchResults.length) return;
+                    if (pointer - 1 < 0) {
+                        setPointer(searchResults.length - 1);
+                    } else {
+                        setPointer(pointer - 1);
+                    }
+                }
+                break;
+            case 'ArrowDown':
+                if (!isDropdownOpen) {
+                    setPointer(0);
+                    openDropdown();
+                } else {
+                    if (!searchResults.length) return;
+                    if (pointer + 1 >= searchResults.length) {
+                        setPointer(0);
+                    } else {
+                        setPointer(pointer + 1);
+                    }
+                }
+                break;
+            case 'Enter':
+                const option = searchResults[pointer];
+                handleOptionSelect(option);
+                break;
+            case 'Escape':
+                closeDropdown();
+                break;
+            default:
+                break;
+        }
+    }
+
     return (
         <MultiselectView
             ref={innerRef}
             dropdownPosition={dropdownPosition}
             isDropdownOpen={isDropdownOpen}
-            onClick={() => setIsDropdownOpen(true)}
+            onClick={openDropdown}
+            onKeyDown={handleKeyDown}
         >
             <MultiselectContent
                 selected={selectedItems}

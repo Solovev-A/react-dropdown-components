@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Option from './option';
+import NoResults from './noResults';
 
 
 const DropdownView = styled.div`
@@ -48,22 +49,24 @@ const Dropdown = ({
             parentBounds={parentBounds}
         >
             {
-                options.map((option, index) => {
-                    const text = getOptionText(option);
-                    const isPointerOver = index === pointer;
-                    const isSelected = !!selectedItems.find(item => getOptionText(item) === text);
+                options.length
+                    ? options.map((option, index) => {
+                        const text = getOptionText(option);
+                        const isPointerOver = index === pointer;
+                        const isSelected = !!selectedItems.find(item => getOptionText(item) === text);
 
-                    return (
-                        <Option key={text}
-                            isPointerOver={isPointerOver}
-                            isSelected={isSelected}
-                            onMouseEnter={() => onUpdatePointer(index)}
-                            onClick={() => onSelectOption(option)}
-                        >
-                            {text}
-                        </Option>
-                    )
-                })
+                        return (
+                            <Option key={text}
+                                isPointerOver={isPointerOver}
+                                isSelected={isSelected}
+                                onMouseEnter={() => onUpdatePointer(index)}
+                                onClick={() => onSelectOption(option)}
+                            >
+                                {text}
+                            </Option>
+                        )
+                    })
+                    : <NoResults />
             }
         </DropdownView>
     );

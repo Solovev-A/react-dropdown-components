@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const InputView = styled.input`
 flex-grow: 1;
+margin-top: calc(.375rem - 2px);
 padding: 0;
 box-sizing: border-box;
 border: none;
@@ -16,13 +17,13 @@ color: #495057;
 }
 `;
 
-const Input = ({ placeholder, search, onSearchChange }) => {
+const Input = ({ placeholder, value, onSearchChange }) => {
     const onChange = (event) => onSearchChange(event.target.value);
 
     return (
         <InputView
             placeholder={placeholder}
-            value={search}
+            value={value}
             onChange={onChange}
         />
     );

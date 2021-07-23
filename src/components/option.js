@@ -53,3 +53,4 @@ const Option = ({ isPointerOver, isSelected, children, ...props }) => {
 }
 
 export default Option;
+export { OptionView };

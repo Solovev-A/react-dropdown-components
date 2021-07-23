@@ -5,4 +5,10 @@ const getDropdownPosition = (parentBounds, dropdownMaxHeight) => {
         : 'top';
 }
 
-export { getDropdownPosition };
+const filterOptions = (options, search, getOptionValue = (item) => item) => {
+    const regExpSafeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const reg = new RegExp(regExpSafeSearch, 'i');
+    return options.filter(item => reg.test(getOptionValue(item)));
+}
+
+export { getDropdownPosition, filterOptions };
