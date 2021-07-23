@@ -1,15 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
+import useResizeObserver from './useResizeObserver';
 
 const useElementBounds = (elementRef) => {
     const [elementBounds, setElementBounds] = useState();
 
     const updateElementBounds = useCallback(() => {
-        setElementBounds(elementRef.current.getBoundingClientRect());
+        if (elementRef && elementRef.current) {
+            setElementBounds(elementRef.current.getBoundingClientRect());
+        }
     }, [elementRef]);
+
+    useResizeObserver(updateElementBounds, elementRef);
 
     useEffect((() => {
         updateElementBounds();
-        console.log('Добавляем события окна');
         window.addEventListener('resize', updateElementBounds);
         window.addEventListener('scroll', updateElementBounds);
 

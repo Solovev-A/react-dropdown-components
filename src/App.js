@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Multiselect from './components/multiselect';
 
 const App = () => {
+  const [selected, setSelected] = useState(['Опция 3']);
+
   return (
     <div style={{ width: '600px', margin: '1300px auto', height: '3000px' }}>
       <Multiselect
-        selected={['Опция 2', 'Опция 3', 'Опция 5']}
+        value={selected}
         options={['Опция 1', 'Опция 2', 'Опция 3', 'Опция 4', 'Опция 5']}
-        onSelectedChange={() => undefined}
+        onChange={setSelected}
       />
     </div>
   );

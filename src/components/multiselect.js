@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 import useElementBounds from '../hooks/useElementBounds';
@@ -10,11 +10,11 @@ import Input from './input';
 import { filterOptions } from '../utils';
 
 
-
 const MultiselectView = styled.div`
 position: relative;
 min-height: calc(1.5em + .75rem + 2px) !important;
 width: 100%;
+
 margin: 0;
 padding-bottom: 6px;
 box-sizing: border-box;
@@ -35,82 +35,68 @@ ${({ dropdownPosition, isDropdownOpen }) =>
 }
 `;
 
+
 const Multiselect = ({
     options = [],
-    selected = [],
-    onSelectedChange = () => undefined,
+    value, // состояние выбранных элементов должно управляться родительским компонентом
+    onChange,
     getOptionText = (item) => item,
     getSelectedText = (item) => item,
     dropdownHeight = 300,
     placeholder = 'Начните ввод для поиска'
 }) => {
+    // State
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState(options);
-    const [selectedItems, setSelectedItems] = useState(selected);
     const [pointer, setPointer] = useState(null);
 
-    const updateSearch = (value) => {
+
+    // Functions
+
+    const updateSearch = useCallback((value) => {
         setSearch(value);
         const newSearchResults = filterOptions(options, value, getOptionText);
         setPointer(newSearchResults.length ? 0 : null);
         setSearchResults(newSearchResults);
-    }
+    }, [options, getOptionText])
 
-    const openDropdown = () => {
+    const openDropdown = useCallback(() => {
         if (pointer === null && searchResults.length) {
             setPointer(0);
         }
         setIsDropdownOpen(true);
-    }
+    }, [pointer, searchResults])
 
-    const closeDropdown = () => {
+    const closeDropdown = useCallback(() => {
         updateSearch('');
         setIsDropdownOpen(false);
-    }
+    }, [updateSearch])
 
-    const innerRef = useOuterClick(closeDropdown);
-    const selectBounds = useElementBounds(innerRef);
-    const dropdownPosition = useDropdownPosition(selectBounds, dropdownHeight);
-
-    const SearchInput = <Input
-        placeholder={selected.length ? null : placeholder}
-        value={search}
-        onSearchChange={updateSearch}
-    />
-
-    const isEqual = (item, another) => {
-        return getOptionText(item) === getOptionText(another);
-    }
-
-    const handleOptionSelect = (option) => {
-        const selectedOptionIndex = selectedItems.findIndex(item => isEqual(item, option))
-        let newSelectedItems;
+    const handleOptionSelect = useCallback((option) => {
+        const selectedOptionIndex = value.findIndex(item => getOptionText(item) === getOptionText(option))
+        let newValue;
 
         if (selectedOptionIndex !== -1) {
             // если выбираемая опция уже была выбрана ранее, исключаем ее из выбора
-            newSelectedItems = [
-                ...selectedItems.slice(0, selectedOptionIndex),
-                ...selectedItems.slice(selectedOptionIndex + 1)
+            newValue = [
+                ...value.slice(0, selectedOptionIndex),
+                ...value.slice(selectedOptionIndex + 1)
             ]
         } else {
-            newSelectedItems = [...selectedItems, option];
+            newValue = [...value, option];
         }
 
-        onSelectedChange(newSelectedItems);
-        setSelectedItems(newSelectedItems);
-    }
+        onChange(newValue);
+    }, [value, getOptionText, onChange])
 
-    const handleItemSelectionRemove = (item) => {
-        const newSelectedItems = selectedItems.filter(selected => getSelectedText(selected) !== getSelectedText(item));
-        setSelectedItems(newSelectedItems);
-    }
+    const handleItemSelectionRemove = useCallback((item) => {
+        const newSelectedItems = value.filter(selected => getSelectedText(selected) !== getSelectedText(item));
+        onChange(newSelectedItems);
+    }, [value, getSelectedText, onChange])
 
-    const handleUpdatePointer = (newPointer) => {
-        setPointer(newPointer);
-    }
-
-    const handleKeyDown = (event) => {
+    const handleKeyDown = useCallback((event) => {
         switch (event.key) {
             case 'ArrowUp':
                 if (!isDropdownOpen) {
@@ -148,7 +134,23 @@ const Multiselect = ({
             default:
                 break;
         }
-    }
+    }, [closeDropdown, isDropdownOpen, handleOptionSelect, openDropdown, pointer, searchResults])
+
+
+    // Work with DOM
+
+    const innerRef = useOuterClick(closeDropdown);
+    const selectBounds = useElementBounds(innerRef);
+    const dropdownPosition = useDropdownPosition(selectBounds, dropdownHeight);
+
+
+    // Components
+
+    const SearchInput = <Input
+        placeholder={value.length ? null : placeholder}
+        value={search}
+        onSearchChange={updateSearch}
+    />
 
     return (
         <MultiselectView
@@ -159,7 +161,7 @@ const Multiselect = ({
             onKeyDown={handleKeyDown}
         >
             <MultiselectContent
-                selected={selectedItems}
+                selected={value}
                 getSelectedText={getSelectedText}
                 onItemRemove={handleItemSelectionRemove}
                 input={SearchInput}
@@ -171,8 +173,8 @@ const Multiselect = ({
                         getOptionText={getOptionText}
                         onSelectOption={handleOptionSelect}
                         pointer={pointer}
-                        onUpdatePointer={handleUpdatePointer}
-                        selectedItems={selectedItems}
+                        onUpdatePointer={setPointer}
+                        selectedItems={value}
                         parentBounds={selectBounds}
                         maxHeight={300}
                         position={dropdownPosition}
