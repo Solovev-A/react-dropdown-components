@@ -29,9 +29,14 @@ color: #bdc6d0;
 `;
 
 const SelectedItem = ({ onItemRemove, children }) => {
+    const onClick = (event) => {
+        event.stopPropagation();
+        onItemRemove();
+    }
+
     return (
         <SelectedItemView>
-            <RemoveItem onClick={(e) => onItemRemove()}>
+            <RemoveItem onClick={onClick}>
                 &times;
             </RemoveItem>
             {children}

@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 import useElementBounds from '../hooks/useElementBounds';
 import useOuterClick from './../hooks/useOuterClick';
 import useDropdownPosition from './../hooks/useDropdownPosition'
+import useInput from '../hooks/useInput';
 import Dropdown from './dropdown';
 import MultiselectContent from './multiselectContent';
 import Input from './input';
@@ -14,7 +15,6 @@ const MultiselectView = styled.div`
 position: relative;
 min-height: calc(1.5em + .75rem + 2px) !important;
 width: 100%;
-
 margin: 0;
 padding-bottom: 6px;
 box-sizing: border-box;
@@ -45,19 +45,19 @@ const Multiselect = ({
     dropdownHeight = 300,
     placeholder = 'Начните ввод для поиска'
 }) => {
-    // State
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState(options);
     const [pointer, setPointer] = useState(null);
 
+    const { inputRef, focus, blur } = useInput();
 
-    // Functions
 
     const updateSearch = useCallback((value) => {
         setSearch(value);
-        const newSearchResults = filterOptions(options, value, getOptionText);
+        const newSearchResults = value === ''
+            ? options
+            : filterOptions(options, value, getOptionText);
         setPointer(newSearchResults.length ? 0 : null);
         setSearchResults(newSearchResults);
     }, [options, getOptionText])
@@ -69,10 +69,18 @@ const Multiselect = ({
         setIsDropdownOpen(true);
     }, [pointer, searchResults])
 
-    const closeDropdown = useCallback(() => {
+    const closeDropdown = useCallback((withBlur) => {
         updateSearch('');
+        setPointer(null);
+        withBlur && blur();
         setIsDropdownOpen(false);
-    }, [updateSearch])
+    }, [updateSearch, blur])
+
+    const handleChange = useCallback((newValue) => {
+        onChange(newValue);
+        closeDropdown();
+        focus();
+    }, [closeDropdown, focus, onChange])
 
     const handleOptionSelect = useCallback((option) => {
         const selectedOptionIndex = value.findIndex(item => getOptionText(item) === getOptionText(option))
@@ -87,14 +95,13 @@ const Multiselect = ({
         } else {
             newValue = [...value, option];
         }
-
-        onChange(newValue);
-    }, [value, getOptionText, onChange])
+        handleChange(newValue);
+    }, [value, getOptionText, handleChange])
 
     const handleItemSelectionRemove = useCallback((item) => {
-        const newSelectedItems = value.filter(selected => getSelectedText(selected) !== getSelectedText(item));
-        onChange(newSelectedItems);
-    }, [value, getSelectedText, onChange])
+        const newValue = value.filter(selected => getSelectedText(selected) !== getSelectedText(item));
+        handleChange(newValue);
+    }, [value, getSelectedText, handleChange])
 
     const handleKeyDown = useCallback((event) => {
         switch (event.key) {
@@ -125,28 +132,41 @@ const Multiselect = ({
                 }
                 break;
             case 'Enter':
+                if (pointer === null) return;
+
                 const option = searchResults[pointer];
                 handleOptionSelect(option);
                 break;
             case 'Escape':
-                closeDropdown();
+                closeDropdown(true);
                 break;
             default:
+                if (!isDropdownOpen) {
+                    openDropdown();
+                }
                 break;
         }
     }, [closeDropdown, isDropdownOpen, handleOptionSelect, openDropdown, pointer, searchResults])
 
+    const onClick = useCallback(() => {
+        if (isDropdownOpen && search.length) return focus();;
 
-    // Work with DOM
+        if (isDropdownOpen) {
+            closeDropdown()
+        } else {
+            openDropdown()
+        }
+        focus();
+    }, [search, isDropdownOpen, closeDropdown, openDropdown, focus])
 
-    const innerRef = useOuterClick(closeDropdown);
+
+    const innerRef = useOuterClick(() => closeDropdown(true));
     const selectBounds = useElementBounds(innerRef);
     const dropdownPosition = useDropdownPosition(selectBounds, dropdownHeight);
 
 
-    // Components
-
     const SearchInput = <Input
+        inputRef={inputRef}
         placeholder={value.length ? null : placeholder}
         value={search}
         onSearchChange={updateSearch}
@@ -157,8 +177,8 @@ const Multiselect = ({
             ref={innerRef}
             dropdownPosition={dropdownPosition}
             isDropdownOpen={isDropdownOpen}
-            onClick={openDropdown}
             onKeyDown={handleKeyDown}
+            onClick={onClick}
         >
             <MultiselectContent
                 selected={value}

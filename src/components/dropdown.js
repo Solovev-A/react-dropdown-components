@@ -54,13 +54,17 @@ const Dropdown = ({
                         const text = getOptionText(option);
                         const isPointerOver = index === pointer;
                         const isSelected = !!selectedItems.find(item => getOptionText(item) === text);
+                        const onClick = (event) => {
+                            event.stopPropagation();
+                            onSelectOption(option);
+                        }
 
                         return (
                             <Option key={text}
                                 isPointerOver={isPointerOver}
                                 isSelected={isSelected}
                                 onMouseEnter={() => onUpdatePointer(index)}
-                                onClick={() => onSelectOption(option)}
+                                onClick={onClick}
                             >
                                 {text}
                             </Option>

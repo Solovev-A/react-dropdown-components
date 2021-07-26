@@ -17,11 +17,12 @@ color: #495057;
 }
 `;
 
-const Input = ({ placeholder, value, onSearchChange }) => {
+const Input = ({ inputRef, placeholder, value, onSearchChange }) => {
     const onChange = (event) => onSearchChange(event.target.value);
 
     return (
         <InputView
+            ref={inputRef}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
