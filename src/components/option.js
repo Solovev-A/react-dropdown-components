@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 const OptionView = styled.span`
 padding: .375rem .75rem;
-display: block; 
-overflow: hidden; 
+display: block;
 white-space: nowrap;
 cursor: pointer;
 

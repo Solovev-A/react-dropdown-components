@@ -12,6 +12,7 @@ max-height: ${({ maxHeight }) => maxHeight}px;
 width: ${({ parentBounds }) => parentBounds.width}px;
 display: flex;
 flex-direction: column;
+overflow-x: hidden;
 border-radius: 0;
 background-color: white;
 border: 1px solid #ced4da;
