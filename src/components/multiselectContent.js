@@ -9,16 +9,16 @@ flex: 1;
 padding-left: .375rem;
 `;
 
-const MultiselectContent = ({ selected, getSelectedText, onItemRemove, input }) => {
+const MultiselectContent = ({ selected, getOptionKey, renderValueText, onItemRemove, input }) => {
     return (
         <MultiselectContentView>
             {
-                selected.map((item) => {
-                    const handleRemoveItem = () => onItemRemove(item);
+                selected.map((option) => {
+                    const handleRemoveItem = () => onItemRemove(option);
 
                     return (
-                        <SelectedItem key={getSelectedText(item)} onItemRemove={handleRemoveItem}>
-                            {getSelectedText(item)}
+                        <SelectedItem key={getOptionKey(option)} onItemRemove={handleRemoveItem}>
+                            {renderValueText(option)}
                         </SelectedItem>
                     )
                 })

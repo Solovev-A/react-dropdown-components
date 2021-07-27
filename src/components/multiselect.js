@@ -14,26 +14,37 @@ import { filterOptions } from '../utils';
 
 const Multiselect = ({
     options = [],
-    value, // состояние выбранных элементов должно управляться родительским компонентом
+    value = [], // состояние выбранных элементов должно управляться родительским компонентом
     onChange,
-    getOptionText = (item) => item,
-    getSelectedText = (item) => item,
+    getOptionKey = (option) => option.id ?? option,
+    renderOptionText = (option) => option,
+    renderValueText = (option) => option,
     dropdownHeight = 300,
     placeholder = 'Начните ввод для поиска',
-    disabled = false
+    disabled = false,
+    getSearchValue = (option) => renderOptionText(option)
 }) => {
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState(options);
 
     const { inputRef, focus, blur } = useInput();
 
+    const updateSearch = useCallback((value) => {
+        setSearch(value);
+        const newSearchResults = value === ''
+            ? options
+            : filterOptions(options, value, getSearchValue);
+        setSearchResults(newSearchResults);
+    }, [options, getSearchValue])
+
     const handleChange = useCallback((newValue) => {
         onChange(newValue);
+        updateSearch('');
         focus();
-    }, [focus, onChange])
+    }, [focus, onChange, updateSearch])
 
     const handleOptionSelect = useCallback((option) => {
-        const selectedOptionIndex = value.findIndex(item => getOptionText(item) === getOptionText(option))
+        const selectedOptionIndex = value.findIndex(item => getOptionKey(item) === getOptionKey(option))
         let newValue;
 
         if (selectedOptionIndex !== -1) {
@@ -46,12 +57,12 @@ const Multiselect = ({
             newValue = [...value, option];
         }
         handleChange(newValue);
-    }, [value, getOptionText, handleChange])
+    }, [value, getOptionKey, handleChange])
 
     const handleItemSelectionRemove = useCallback((item) => {
-        const newValue = value.filter(selected => getSelectedText(selected) !== getSelectedText(item));
+        const newValue = value.filter(selected => getOptionKey(selected) !== getOptionKey(item));
         handleChange(newValue);
-    }, [value, getSelectedText, handleChange])
+    }, [value, getOptionKey, handleChange])
 
     const { dropdown, pointer, handleKeyDown, handleClick } = useDropdown({
         onCloseWithEscape: blur,
@@ -61,19 +72,11 @@ const Multiselect = ({
         value
     });
 
-    const updateSearch = useCallback((value) => {
-        setSearch(value);
-        const newSearchResults = value === ''
-            ? options
-            : filterOptions(options, value, getOptionText);
-        setSearchResults(newSearchResults);
-    }, [options, getOptionText])
-
-    const closeDropdown = useCallback((withBlur) => {
+    const onOuterClick = useCallback(() => {
         dropdown.close();
-        withBlur && blur();
+        blur();
         updateSearch('');
-    }, [updateSearch, dropdown, blur])
+    }, [dropdown, blur, updateSearch])
 
     const onClick = useCallback(() => {
         handleClick();
@@ -81,7 +84,7 @@ const Multiselect = ({
     }, [handleClick, focus])
 
 
-    const innerRef = useOuterClick(() => closeDropdown(true));
+    const innerRef = useOuterClick(onOuterClick);
     const selectBounds = useElementBounds(innerRef);
     const dropdownPosition = useDropdownPosition(selectBounds, dropdownHeight);
 
@@ -105,7 +108,8 @@ const Multiselect = ({
         >
             <MultiselectContent
                 selected={value}
-                getSelectedText={getSelectedText}
+                getOptionKey={getOptionKey}
+                renderValueText={renderValueText}
                 onItemRemove={handleItemSelectionRemove}
                 input={SearchInput}
             />
@@ -113,7 +117,8 @@ const Multiselect = ({
                 dropdown.isOpen && !disabled
                     ? <Dropdown
                         options={searchResults}
-                        getOptionText={getOptionText}
+                        getOptionKey={getOptionKey}
+                        renderOptionText={renderOptionText}
                         onSelectOption={handleOptionSelect}
                         pointer={pointer.position}
                         onUpdatePointer={pointer.setPosition}

@@ -33,7 +33,8 @@ ${({ parentBounds, dropdownPosition }) =>
 
 const Dropdown = ({
     options,
-    getOptionText,
+    getOptionKey = (option) => option,
+    renderOptionText = (option) => option,
     onSelectOption,
     selectedItems,
     pointer,
@@ -51,22 +52,22 @@ const Dropdown = ({
             {
                 options.length
                     ? options.map((option, index) => {
-                        const text = getOptionText(option);
+                        const key = getOptionKey(option);
                         const isPointerOver = index === pointer;
-                        const isSelected = !!selectedItems.find(item => getOptionText(item) === text);
+                        const isSelected = !!selectedItems.find(item => getOptionKey(item) === key);
                         const onClick = (event) => {
                             event.stopPropagation();
                             onSelectOption(option);
                         }
 
                         return (
-                            <Option key={text}
+                            <Option key={key}
                                 isPointerOver={isPointerOver}
                                 isSelected={isSelected}
                                 onMouseEnter={() => onUpdatePointer(index)}
                                 onClick={onClick}
                             >
-                                {text}
+                                {renderOptionText(option)}
                             </Option>
                         )
                     })
