@@ -1,40 +1,15 @@
 import React, { useState, useCallback } from 'react';
-import styled from 'styled-components';
 
 import useElementBounds from '../hooks/useElementBounds';
 import useOuterClick from './../hooks/useOuterClick';
 import useDropdownPosition from './../hooks/useDropdownPosition'
 import useInput from '../hooks/useInput';
 import useDropdown from '../hooks/useDropdown';
-import Dropdown from './dropdown';
+import Container from './container';
 import MultiselectContent from './multiselectContent';
+import Dropdown from './dropdown';
 import Input from './input';
 import { filterOptions } from '../utils';
-
-
-const MultiselectView = styled.div`
-position: relative;
-min-height: calc(1.5em + .75rem + 2px) !important;
-width: 100%;
-margin: 0;
-padding-bottom: 6px;
-box-sizing: border-box;
-display: flex;
-background-color: #fff;
-border: 1px solid #ced4da;
-border-radius: .25rem;
-cursor: pointer;
-${({ dropdownPosition, isDropdownOpen }) =>
-        isDropdownOpen &&
-        `border-${dropdownPosition}-right-radius: 0;
-         border-${dropdownPosition}-left-radius: 0;
-         border-${dropdownPosition}-color: #fff;`
-    }
-
-&:focus-within {
-    box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
-}
-`;
 
 
 const Multiselect = ({
@@ -94,9 +69,10 @@ const Multiselect = ({
     }, [options, getOptionText])
 
     const closeDropdown = useCallback((withBlur) => {
-        dropdown.close(withBlur)
+        dropdown.close();
+        withBlur && blur();
         updateSearch('');
-    }, [updateSearch, dropdown])
+    }, [updateSearch, dropdown, blur])
 
     const onClick = useCallback(() => {
         handleClick();
@@ -117,7 +93,7 @@ const Multiselect = ({
     />
 
     return (
-        <MultiselectView
+        <Container
             ref={innerRef}
             dropdownPosition={dropdownPosition}
             isDropdownOpen={dropdown.isOpen}
@@ -145,7 +121,7 @@ const Multiselect = ({
                     />
                     : null
             }
-        </MultiselectView>
+        </Container>
     )
 }
 

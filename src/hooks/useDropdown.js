@@ -16,11 +16,10 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
         setIsDropdownOpen(true);
     }, [pointer, options])
 
-    const closeDropdown = useCallback((withBlur) => {
+    const closeDropdown = useCallback(() => {
         setIsDropdownOpen(false);
         setPointer(null);
-        withBlur && onCloseWithEscape();
-    }, [onCloseWithEscape])
+    }, [])
 
     const handleKeyDown = useCallback((event) => {
         switch (event.key) {
@@ -57,7 +56,8 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
                 onOptionSelect(option);
                 break;
             case 'Escape':
-                closeDropdown(true);
+                closeDropdown();
+                onCloseWithEscape();
                 break;
             default:
                 if (!isDropdownOpen) {
@@ -65,7 +65,7 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
                 }
                 break;
         }
-    }, [closeDropdown, isDropdownOpen, openDropdown, onOptionSelect, pointer, options])
+    }, [closeDropdown, isDropdownOpen, openDropdown, onCloseWithEscape, onOptionSelect, pointer, options])
 
     const handleClick = useCallback(() => {
         if (isDropdownOpen && search.length) return;
