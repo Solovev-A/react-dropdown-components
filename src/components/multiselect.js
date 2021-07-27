@@ -19,7 +19,8 @@ const Multiselect = ({
     getOptionText = (item) => item,
     getSelectedText = (item) => item,
     dropdownHeight = 300,
-    placeholder = 'Начните ввод для поиска'
+    placeholder = 'Начните ввод для поиска',
+    disabled = false
 }) => {
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState(options);
@@ -90,6 +91,7 @@ const Multiselect = ({
         placeholder={value.length ? null : placeholder}
         value={search}
         onSearchChange={updateSearch}
+        disabled={disabled}
     />
 
     return (
@@ -99,6 +101,7 @@ const Multiselect = ({
             isDropdownOpen={dropdown.isOpen}
             onKeyDown={handleKeyDown}
             onClick={onClick}
+            disabled={disabled}
         >
             <MultiselectContent
                 selected={value}
@@ -107,7 +110,7 @@ const Multiselect = ({
                 input={SearchInput}
             />
             {
-                dropdown.isOpen
+                dropdown.isOpen && !disabled
                     ? <Dropdown
                         options={searchResults}
                         getOptionText={getOptionText}

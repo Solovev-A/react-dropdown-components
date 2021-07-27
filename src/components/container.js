@@ -19,6 +19,11 @@ ${({ dropdownPosition, isDropdownOpen }) =>
          border-${dropdownPosition}-left-radius: 0;
          border-${dropdownPosition}-color: #fff;`
     }
+${({ disabled }) => disabled
+        ? `pointer-events: none;
+           background-color: #e9ecef;`
+        : ''
+    }
 
 &:focus-within {
     box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);

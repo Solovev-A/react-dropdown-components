@@ -9,6 +9,7 @@ box-sizing: border-box;
 border: none;
 font-family: inherit;
 font-size: inherit;
+background-color: inherit;
 line-height: inherit;
 color: #495057;
 
@@ -17,7 +18,7 @@ color: #495057;
 }
 `;
 
-const Input = ({ inputRef, placeholder, value, onSearchChange }) => {
+const Input = ({ inputRef, placeholder, value, onSearchChange, disabled }) => {
     const onChange = (event) => onSearchChange(event.target.value);
 
     return (
@@ -26,6 +27,7 @@ const Input = ({ inputRef, placeholder, value, onSearchChange }) => {
             placeholder={placeholder}
             value={value}
             onChange={onChange}
+            disabled={disabled}
         />
     );
 }
