@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react';
+
 import Autocomplete from './components/autocomplete';
 import Multiselect from './components/multiselect';
 import { filterOptions } from './utils';
+import { selectedOption, options } from './mockData'
 
-const options = [
-  'Алексей Петров',
-  'Александр Петров',
-  'Александр Иванов',
-  'Иван Петров',
-  'Александр Сидоров',
-  'Александр Алексеев',
-  'Иван Александров',
-  'Константин Антонов',
-  'Константин Сергеев',
-  'Сергей Ильин',
-  'Василий Ильин'
-]
 
 const autocompleteThreshold = 3;
 
 const App = () => {
-  const [selected, setSelected] = useState(['Иван Петров']);
+  const [selected, setSelected] = useState([selectedOption]);
 
   const [autocompleteOptions, setAutocompleteOptions] = useState([]);
   const [autocompleteValue, setAutocompleteValue] = useState(null);
   const [autocompleteSearch, setAutocompleteSearch] = useState(null);
   const [autocompleteLoading, setAutocompleteLoading] = useState(false);
+
+  const getSearchValue = (option) => option.name;
+  const getOptionKey = (option) => option.id;
+  const renderOptionText = (option) => {
+    return (
+      <span>
+        <b>{option.name}</b> <br />
+        {option.email}
+      </span>
+    )
+  };
+  const renderValueText = (option) => option.name;
 
   useEffect(() => {
     if (autocompleteSearch === null) return;
@@ -34,8 +35,7 @@ const App = () => {
     setAutocompleteLoading(true);
     // здесь может быть обращение к api
     const timer = setTimeout(() => {
-      console.log('API CALL')
-      const newOptions = filterOptions(options, autocompleteSearch);
+      const newOptions = filterOptions(options, autocompleteSearch, getSearchValue);
       setAutocompleteOptions(newOptions);
       setAutocompleteLoading(false);
     }, 500)
@@ -45,15 +45,23 @@ const App = () => {
 
 
   return (
-    <div style={{ width: '600px', margin: '1300px auto', height: '3000px' }}>
-      <div style={{ margin: '0 0 100px 0' }}>
+    <div style={{ width: '600px', margin: '50px auto' }}>
+      <h1>React dropdown components</h1>
+      <div>
+        <h2>Multiselect</h2>
         <Multiselect
           value={selected}
           options={options}
           onChange={setSelected}
+          getOptionKey={getOptionKey}
+          renderOptionText={renderOptionText}
+          renderValueText={renderValueText}
+          getSearchValue={getSearchValue}
+          placeholder='Type to search'
         />
       </div>
-      <div style={{ margin: '0 0 100px 0' }}>
+      <div>
+        <h2>Autocomplete</h2>
         <Autocomplete
           options={autocompleteOptions}
           value={autocompleteValue}
@@ -61,6 +69,9 @@ const App = () => {
           onSearchChange={setAutocompleteSearch}
           isLoading={autocompleteLoading}
           threshold={autocompleteThreshold}
+          getOptionKey={getOptionKey}
+          renderOptionText={renderOptionText}
+          placeholder='Type "fish"'
         />
       </div>
     </div>

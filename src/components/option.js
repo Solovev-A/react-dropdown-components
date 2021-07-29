@@ -41,7 +41,7 @@ const Option = ({ isPointerOver, isSelected, children, ...props }) => {
             ref={optionRef}
             role='option'
             aria-selected={isSelected}
-            title={children}
+            title={typeof children === 'string' ? children : null}
             isPointerOver={isPointerOver}
             isSelected={isSelected}
             {...props}
