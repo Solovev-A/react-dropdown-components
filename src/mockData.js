@@ -8,7 +8,7 @@ const options = [
     { ...selectedOption },
     {
         id: "6102f571926af4d952c415d3",
-        name: "Elinor Fisher dsjkfdsjfkj kdsjf sdfjsd kfsdjfk sdjfksdf jsdkfjsd fksdj fkdsfjds fsdjfksd fksdfj sdkfjsd kfsdjfk jdsfk sdfksd jfksdf jsdkfj sd",
+        name: "Elinor Fisher",
         email: "elinorfisher@google.com"
     },
     {
