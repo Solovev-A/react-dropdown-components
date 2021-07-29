@@ -1,15 +1,15 @@
 import React, { useState, useCallback } from 'react';
 
-import useElementBounds from '../hooks/useElementBounds';
-import useOuterClick from './../hooks/useOuterClick';
-import useDropdownPosition from './../hooks/useDropdownPosition'
-import useInput from '../hooks/useInput';
-import useDropdown from '../hooks/useDropdown';
-import Container from './container';
-import MultiselectContent from './multiselectContent';
-import Dropdown from './dropdown';
-import Input from './input';
-import { filterOptions } from '../utils';
+import useElementBounds from '../../hooks/useElementBounds';
+import useOuterClick from '../../hooks/useOuterClick';
+import useDropdownPosition from '../../hooks/useDropdownPosition'
+import useInput from '../../hooks/useInput';
+import useDropdown from '../../hooks/useDropdown';
+import Container from '../container';
+import Content from './content';
+import Dropdown from '../dropdown';
+import Input from '../input';
+import { filterOptions } from '../../utils';
 
 
 const Multiselect = ({
@@ -18,11 +18,12 @@ const Multiselect = ({
     onChange,
     getOptionKey = (option) => option.id ?? option,
     renderOptionText = (option) => option,
-    renderValueText = (option) => option,
+    renderValueText = (option) => renderOptionText(option),
     dropdownHeight = 300,
     placeholder = 'Начните ввод для поиска',
     disabled = false,
-    getSearchValue = (option) => renderOptionText(option)
+    getSearchValue = (option) => renderOptionText(option),
+    ...props
 }) => {
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState(options);
@@ -64,7 +65,7 @@ const Multiselect = ({
         handleChange(newValue);
     }, [value, getOptionKey, handleChange])
 
-    const { dropdown, pointer, handleKeyDown, handleClick } = useDropdown({
+    const { dropdown, pointer, handleKeyDown } = useDropdown({
         onCloseWithEscape: blur,
         onOptionSelect: handleOptionSelect,
         options: searchResults,
@@ -79,9 +80,9 @@ const Multiselect = ({
     }, [dropdown, blur, updateSearch])
 
     const onClick = useCallback(() => {
-        handleClick();
+        dropdown.toggle();
         focus();
-    }, [handleClick, focus])
+    }, [dropdown, focus])
 
 
     const innerRef = useOuterClick(onOuterClick);
@@ -105,8 +106,9 @@ const Multiselect = ({
             onKeyDown={handleKeyDown}
             onClick={onClick}
             disabled={disabled}
+            {...props}
         >
-            <MultiselectContent
+            <Content
                 selected={value}
                 getOptionKey={getOptionKey}
                 renderValueText={renderValueText}

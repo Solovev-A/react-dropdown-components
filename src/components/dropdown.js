@@ -34,6 +34,7 @@ ${({ parentBounds, dropdownPosition }) =>
 
 const Dropdown = ({
     options,
+    content,
     getOptionKey = (option) => option,
     renderOptionText = (option) => option,
     onSelectOption,
@@ -51,28 +52,31 @@ const Dropdown = ({
             parentBounds={parentBounds}
         >
             {
-                options.length
-                    ? options.map((option, index) => {
-                        const key = getOptionKey(option);
-                        const isPointerOver = index === pointer;
-                        const isSelected = !!selectedItems.find(item => getOptionKey(item) === key);
-                        const onClick = (event) => {
-                            event.stopPropagation();
-                            onSelectOption(option);
-                        }
+                content
+                    ? content
+                    :
+                    options.length
+                        ? options.map((option, index) => {
+                            const key = getOptionKey(option);
+                            const isPointerOver = index === pointer;
+                            const isSelected = !!(selectedItems && selectedItems.find(item => getOptionKey(item) === key));
+                            const onClick = (event) => {
+                                event.stopPropagation();
+                                onSelectOption(option);
+                            }
 
-                        return (
-                            <Option key={key}
-                                isPointerOver={isPointerOver}
-                                isSelected={isSelected}
-                                onMouseEnter={() => onUpdatePointer(index)}
-                                onClick={onClick}
-                            >
-                                {renderOptionText(option)}
-                            </Option>
-                        )
-                    })
-                    : <NoResults />
+                            return (
+                                <Option key={key}
+                                    isPointerOver={isPointerOver}
+                                    isSelected={isSelected}
+                                    onMouseEnter={() => onUpdatePointer(index)}
+                                    onClick={onClick}
+                                >
+                                    {renderOptionText(option)}
+                                </Option>
+                            )
+                        })
+                        : <NoResults />
             }
         </DropdownView>
     );

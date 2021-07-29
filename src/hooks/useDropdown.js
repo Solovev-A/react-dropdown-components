@@ -67,7 +67,7 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
         }
     }, [closeDropdown, isDropdownOpen, openDropdown, onCloseWithEscape, onOptionSelect, pointer, options])
 
-    const handleClick = useCallback(() => {
+    const toggle = useCallback(() => {
         if (isDropdownOpen && search.length) return;
 
         if (isDropdownOpen) {
@@ -93,14 +93,14 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
         dropdown: {
             isOpen: isDropdownOpen,
             open: openDropdown,
-            close: closeDropdown
+            close: closeDropdown,
+            toggle
         },
         pointer: {
             position: pointer,
             setPosition: setPointer
         },
-        handleKeyDown,
-        handleClick
+        handleKeyDown
     }
 }
 
