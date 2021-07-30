@@ -1,5 +1,5 @@
 import React from 'react';
-import { OptionView } from './../option';
+import { OptionView } from '../option';
 import styled from 'styled-components';
 
 const LoadingView = styled(OptionView)`

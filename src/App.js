@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import Autocomplete from './components/autocomplete';
-import Multiselect from './components/multiselect';
-import { filterOptions } from './utils';
+import { Autocomplete, Multiselect } from './lib/components';
+import { filterOptions } from './lib/utils';
 import { selectedOption, options } from './mockData'
 
 
