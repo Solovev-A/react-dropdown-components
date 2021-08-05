@@ -49,10 +49,10 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 const Autocomplete = _ref => {
   let {
-    options,
-    value,
-    onChange,
-    onSearchChange,
+    options = [],
+    value = null,
+    onChange = () => undefined,
+    onSearchChange = () => undefined,
     threshold = 3,
     isLoading = false,
     getOptionKey = option => {

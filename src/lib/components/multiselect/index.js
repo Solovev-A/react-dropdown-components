@@ -15,7 +15,7 @@ import { filterOptions } from '../../utils';
 const Multiselect = ({
     options = [],
     value = [], // состояние выбранных элементов должно управляться родительским компонентом
-    onChange,
+    onChange = () => undefined,
     getOptionKey = (option) => option.id ?? option,
     renderOptionText = (option) => option,
     renderValueText = (option) => renderOptionText(option),

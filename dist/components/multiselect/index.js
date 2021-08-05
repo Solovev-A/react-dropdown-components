@@ -50,7 +50,7 @@ const Multiselect = _ref => {
     options = [],
     value = [],
     // состояние выбранных элементов должно управляться родительским компонентом
-    onChange,
+    onChange = () => undefined,
     getOptionKey = option => {
       var _option$id;
 

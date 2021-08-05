@@ -14,10 +14,10 @@ import Loading from './loading';
 
 
 const Autocomplete = ({
-    options,
-    value,
-    onChange,
-    onSearchChange,
+    options = [],
+    value = null,
+    onChange = () => undefined,
+    onSearchChange = () => undefined,
     threshold = 3,
     isLoading = false,
     getOptionKey = (option) => option.id ?? option,
