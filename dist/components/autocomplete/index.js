@@ -9,6 +9,8 @@ exports.default = void 0;
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
+require("core-js/modules/es.string.starts-with.js");
+
 var _react = _interopRequireWildcard(require("react"));
 
 var _useElementBounds = _interopRequireDefault(require("../../hooks/useElementBounds"));
@@ -77,9 +79,14 @@ const Autocomplete = _ref => {
   const thresholdContent = search.length <= threshold ? /*#__PURE__*/_react.default.createElement(_threshold.default, null) : null;
   const loadingContent = isLoading ? /*#__PURE__*/_react.default.createElement(_loading.default, null) : null;
   const updateSearch = (0, _react.useCallback)(value => {
+    // не следует повторять поиск, если:
+    const shouldNotSearchRequested = // запрос короче порогового значения
+    value.length <= threshold // либо, если запрос продолжает предыдущий запрос, завершившийся неудачно
+    || value.length > threshold + 1 && !isLoading && options.length === 0 && value.startsWith(search);
     setSearch(value);
+    if (shouldNotSearchRequested) return;
     onSearchChange(value);
-  }, [onSearchChange]);
+  }, [onSearchChange, isLoading, options, threshold, search]);
   const {
     dropdown,
     pointer,

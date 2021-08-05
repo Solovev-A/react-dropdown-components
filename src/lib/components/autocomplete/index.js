@@ -35,9 +35,21 @@ const Autocomplete = ({
     const loadingContent = isLoading ? <Loading /> : null;
 
     const updateSearch = useCallback((value) => {
+        // не следует повторять поиск, если:
+        const shouldNotSearchRequested =
+            // запрос короче порогового значения
+            value.length <= threshold
+            // либо, если запрос продолжает предыдущий запрос, завершившийся неудачно
+            || (value.length > threshold + 1
+                && !isLoading
+                && options.length === 0
+                && value.startsWith(search));
+
         setSearch(value);
+
+        if (shouldNotSearchRequested) return;
         onSearchChange(value);
-    }, [onSearchChange])
+    }, [onSearchChange, isLoading, options, threshold, search])
 
     const { dropdown, pointer, handleKeyDown } = useDropdown({
         onCloseWithEscape: blur,
