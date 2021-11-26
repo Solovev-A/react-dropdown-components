@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoResults component renders correctly 1`] = `
+.c0 {
+  padding: .375rem .75rem;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.c1 {
+  cursor: default;
+}
+
+<span
+  class="c0 c1"
+>
+  Совпадений не найдено
+</span>
+`;

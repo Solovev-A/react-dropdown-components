@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Clear component renders correctly 1`] = `
+.c0 {
+  padding-right: 3px;
+  padding-left: 3px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #bdc6d0;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c0:hover {
+  color: #343a40;
+}
+
+<span
+  class="c0"
+  title="Очистить"
+>
+  ×
+</span>
+`;

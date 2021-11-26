@@ -33,7 +33,7 @@ ${({ parentBounds, dropdownPosition }) =>
 
 
 const Dropdown = ({
-    options,
+    options = [],
     content,
     getOptionKey = (option) => option,
     renderOptionText = (option) => option,
@@ -42,7 +42,7 @@ const Dropdown = ({
     pointer,
     onUpdatePointer,
     parentBounds,
-    maxHeight,
+    maxHeight = 350,
     position
 }) => {
     return (

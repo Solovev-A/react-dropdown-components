@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Container component renders correctly when disabled 1`] = `
+.c0 {
+  position: relative;
+  min-height: calc(1.5em + .75rem + 2px) !important;
+  width: 100%;
+  margin: 0;
+  padding-left: .375rem;
+  padding-right: .375rem;
+  padding-bottom: .375rem;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  cursor: pointer;
+  pointer-events: none;
+  background-color: #e9ecef;
+}
+
+.c0:focus-within {
+  box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
+}
+
+<div
+  class="c0"
+  disabled=""
+/>
+`;
+
+exports[`Container component renders correctly when dropdown is open at bottom 1`] = `
+.c0 {
+  position: relative;
+  min-height: calc(1.5em + .75rem + 2px) !important;
+  width: 100%;
+  margin: 0;
+  padding-left: .375rem;
+  padding-right: .375rem;
+  padding-bottom: .375rem;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  cursor: pointer;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-color: #fff;
+}
+
+.c0:focus-within {
+  box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
+}
+
+<div
+  class="c0"
+/>
+`;
+
+exports[`Container component renders correctly when dropdown is open at top 1`] = `
+.c0 {
+  position: relative;
+  min-height: calc(1.5em + .75rem + 2px) !important;
+  width: 100%;
+  margin: 0;
+  padding-left: .375rem;
+  padding-right: .375rem;
+  padding-bottom: .375rem;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  cursor: pointer;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top-color: #fff;
+}
+
+.c0:focus-within {
+  box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
+}
+
+<div
+  class="c0"
+/>
+`;
+
+exports[`Container component renders correctly without props passed 1`] = `
+.c0 {
+  position: relative;
+  min-height: calc(1.5em + .75rem + 2px) !important;
+  width: 100%;
+  margin: 0;
+  padding-left: .375rem;
+  padding-right: .375rem;
+  padding-bottom: .375rem;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  cursor: pointer;
+}
+
+.c0:focus-within {
+  box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
+}
+
+<div
+  class="c0"
+/>
+`;

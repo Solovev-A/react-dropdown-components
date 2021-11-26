@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dropdown component renders correctly at bottom position 1`] = `
+.c1 {
+  padding: .375rem .75rem;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.c2 {
+  cursor: default;
+}
+
+.c0 {
+  position: absolute;
+  left: -1px;
+  padding: 0px;
+  max-height: 350px;
+  width: 5px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow-x: hidden;
+  border-radius: 0;
+  background-color: white;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  z-index: 19;
+  top: 4px;
+  border-top: none;
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+
+<div
+  class="c0"
+>
+  <span
+    class="c1 c2"
+  >
+    Совпадений не найдено
+  </span>
+</div>
+`;
+
+exports[`Dropdown component renders correctly at top position 1`] = `
+.c1 {
+  padding: .375rem .75rem;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.c2 {
+  cursor: default;
+}
+
+.c0 {
+  position: absolute;
+  left: -1px;
+  padding: 0px;
+  max-height: 350px;
+  width: 5px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow-x: hidden;
+  border-radius: 0;
+  background-color: white;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  z-index: 19;
+  bottom: 5px;
+  border-bottom: none;
+  border-top-right-radius: .25rem;
+  border-top-left-radius: .25rem;
+}
+
+<div
+  class="c0"
+>
+  <span
+    class="c1 c2"
+  >
+    Совпадений не найдено
+  </span>
+</div>
+`;
+
+exports[`Dropdown component renders correctly with required props only 1`] = `
+.c1 {
+  padding: .375rem .75rem;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.c2 {
+  cursor: default;
+}
+
+.c0 {
+  position: absolute;
+  left: -1px;
+  padding: 0px;
+  max-height: 350px;
+  width: 5px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow-x: hidden;
+  border-radius: 0;
+  background-color: white;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  z-index: 19;
+  top: 4px;
+  border-top: none;
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+
+<div
+  class="c0"
+>
+  <span
+    class="c1 c2"
+  >
+    Совпадений не найдено
+  </span>
+</div>
+`;

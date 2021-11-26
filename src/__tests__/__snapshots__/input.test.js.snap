@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input component renders correctly 1`] = `
+.c0 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  margin-top: calc(.375rem - 2px);
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: inherit;
+  line-height: inherit;
+  color: #495057;
+}
+
+.c0:focus {
+  outline: 0;
+}
+
+<input
+  class="c0"
+  value=""
+/>
+`;

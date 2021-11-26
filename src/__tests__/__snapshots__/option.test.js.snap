@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Option component renders correctly when pointed 1`] = `
+.c0 {
+  padding: .375rem .75rem;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #fff;
+  background-color: #007bff;
+}
+
+<span
+  class="c0"
+  role="option"
+/>
+`;
+
+exports[`Option component renders correctly when selected 1`] = `
+.c0 {
+  padding: .375rem .75rem;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #212529;
+  background-color: #f2f2f2;
+}
+
+<span
+  aria-selected="true"
+  class="c0"
+  role="option"
+/>
+`;
+
+exports[`Option component renders correctly without props passed 1`] = `
+.c0 {
+  padding: .375rem .75rem;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+<span
+  class="c0"
+  role="option"
+/>
+`;
