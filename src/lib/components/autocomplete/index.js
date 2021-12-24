@@ -49,11 +49,16 @@ const Autocomplete = ({
 
         if (shouldNotSearchRequested) return;
         onSearchChange(value);
-    }, [onSearchChange, isLoading, options, threshold, search])
+    }, [onSearchChange, isLoading, options, threshold, search]);
+
+    const handleChange = useCallback((value) => {
+        onChange(value);
+        updateSearch('');
+    }, [onChange, updateSearch]);
 
     const { dropdown, pointer, handleKeyDown } = useDropdown({
         onCloseWithEscape: blur,
-        onOptionSelect: onChange,
+        onOptionSelect: handleChange,
         options: options,
         search,
         value
@@ -62,19 +67,19 @@ const Autocomplete = ({
     const onOuterClick = useCallback(() => {
         dropdown.close();
         blur();
-    }, [dropdown, blur])
+        updateSearch('');
+    }, [dropdown, blur, updateSearch]);
 
     const onClick = useCallback(() => {
         if (options.length && search.length > threshold) {
             dropdown.toggle();
         }
         focus();
-    }, [focus, dropdown, options, search, threshold])
+    }, [focus, dropdown, options, search, threshold]);
 
     const handleClear = useCallback(() => {
-        updateSearch('');
-        onChange(null);
-    }, [updateSearch, onChange])
+        handleChange(null);
+    }, [handleChange]);
 
 
     const innerRef = useOuterClick(onOuterClick);
@@ -113,7 +118,7 @@ const Autocomplete = ({
                         options={options}
                         getOptionKey={getOptionKey}
                         renderOptionText={renderOptionText}
-                        onSelectOption={onChange}
+                        onSelectOption={handleChange}
                         pointer={pointer.position}
                         onUpdatePointer={pointer.setPosition}
                         parentBounds={controlBounds}

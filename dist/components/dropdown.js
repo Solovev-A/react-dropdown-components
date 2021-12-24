@@ -39,7 +39,7 @@ const DropdownView = _styledComponents.default.div(_templateObject || (_template
 
 const Dropdown = _ref4 => {
   let {
-    options,
+    options = [],
     content,
     getOptionKey = option => option,
     renderOptionText = option => option,
@@ -48,7 +48,7 @@ const Dropdown = _ref4 => {
     pointer,
     onUpdatePointer,
     parentBounds,
-    maxHeight,
+    maxHeight = 350,
     position
   } = _ref4;
   return /*#__PURE__*/_react.default.createElement(DropdownView, {

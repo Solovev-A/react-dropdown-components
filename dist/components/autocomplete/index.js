@@ -87,13 +87,17 @@ const Autocomplete = _ref => {
     if (shouldNotSearchRequested) return;
     onSearchChange(value);
   }, [onSearchChange, isLoading, options, threshold, search]);
+  const handleChange = (0, _react.useCallback)(value => {
+    onChange(value);
+    updateSearch('');
+  }, [onChange, updateSearch]);
   const {
     dropdown,
     pointer,
     handleKeyDown
   } = (0, _useDropdown.default)({
     onCloseWithEscape: blur,
-    onOptionSelect: onChange,
+    onOptionSelect: handleChange,
     options: options,
     search,
     value
@@ -101,7 +105,8 @@ const Autocomplete = _ref => {
   const onOuterClick = (0, _react.useCallback)(() => {
     dropdown.close();
     blur();
-  }, [dropdown, blur]);
+    updateSearch('');
+  }, [dropdown, blur, updateSearch]);
   const onClick = (0, _react.useCallback)(() => {
     if (options.length && search.length > threshold) {
       dropdown.toggle();
@@ -110,9 +115,8 @@ const Autocomplete = _ref => {
     focus();
   }, [focus, dropdown, options, search, threshold]);
   const handleClear = (0, _react.useCallback)(() => {
-    updateSearch('');
-    onChange(null);
-  }, [updateSearch, onChange]);
+    handleChange(null);
+  }, [handleChange]);
   const innerRef = (0, _useOuterClick.default)(onOuterClick);
   const controlBounds = (0, _useElementBounds.default)(innerRef);
   const dropdownPosition = (0, _useDropdownPosition.default)(controlBounds, dropdownHeight);
@@ -142,7 +146,7 @@ const Autocomplete = _ref => {
     options: options,
     getOptionKey: getOptionKey,
     renderOptionText: renderOptionText,
-    onSelectOption: onChange,
+    onSelectOption: handleChange,
     pointer: pointer.position,
     onUpdatePointer: pointer.setPosition,
     parentBounds: controlBounds,
