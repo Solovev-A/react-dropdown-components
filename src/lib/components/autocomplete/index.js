@@ -57,7 +57,10 @@ const Autocomplete = ({
     }, [onChange, updateSearch]);
 
     const { dropdown, pointer, handleKeyDown } = useDropdown({
-        onCloseWithEscape: blur,
+        onEscape: () => {
+            blur();
+            updateSearch('');
+        },
         onOptionSelect: handleChange,
         options: options,
         search,
@@ -65,10 +68,8 @@ const Autocomplete = ({
     });
 
     const onOuterClick = useCallback(() => {
-        dropdown.close();
-        blur();
-        updateSearch('');
-    }, [dropdown, blur, updateSearch]);
+        dropdown.escape();
+    }, [dropdown]);
 
     const onClick = useCallback(() => {
         if (options.length && search.length > threshold) {

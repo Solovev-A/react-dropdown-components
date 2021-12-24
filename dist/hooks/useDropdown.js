@@ -18,7 +18,7 @@ const useDropdown = _ref => {
     options,
     value,
     onOptionSelect,
-    onCloseWithEscape,
+    onEscape,
     search
   } = _ref;
   // State
@@ -36,6 +36,10 @@ const useDropdown = _ref => {
     setIsDropdownOpen(false);
     setPointer(null);
   }, []);
+  const escapeFromDropdown = (0, _react.useCallback)(() => {
+    closeDropdown();
+    onEscape();
+  }, [closeDropdown, onEscape]);
   const handleKeyDown = (0, _react.useCallback)(event => {
     switch (event.key) {
       case 'ArrowUp':
@@ -77,8 +81,11 @@ const useDropdown = _ref => {
         break;
 
       case 'Escape':
-        closeDropdown();
-        onCloseWithEscape();
+        escapeFromDropdown();
+        break;
+
+      case 'Tab':
+        escapeFromDropdown();
         break;
 
       default:
@@ -88,7 +95,7 @@ const useDropdown = _ref => {
 
         break;
     }
-  }, [closeDropdown, isDropdownOpen, openDropdown, onCloseWithEscape, onOptionSelect, pointer, options]);
+  }, [isDropdownOpen, openDropdown, escapeFromDropdown, onOptionSelect, pointer, options]);
   const toggle = (0, _react.useCallback)(() => {
     if (isDropdownOpen && search.length) return;
 
@@ -110,7 +117,8 @@ const useDropdown = _ref => {
       isOpen: isDropdownOpen,
       open: openDropdown,
       close: closeDropdown,
-      toggle
+      toggle,
+      escape: escapeFromDropdown
     },
     pointer: {
       position: pointer,

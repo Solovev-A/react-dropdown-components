@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search }) => {
+const useDropdown = ({ options, value, onOptionSelect, onEscape, search }) => {
     // State
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -14,12 +14,17 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
             setPointer(0);
         }
         setIsDropdownOpen(true);
-    }, [pointer, options])
+    }, [pointer, options]);
 
     const closeDropdown = useCallback(() => {
         setIsDropdownOpen(false);
         setPointer(null);
-    }, [])
+    }, []);
+
+    const escapeFromDropdown = useCallback(() => {
+        closeDropdown();
+        onEscape();
+    }, [closeDropdown, onEscape]);
 
     const handleKeyDown = useCallback((event) => {
         switch (event.key) {
@@ -56,8 +61,10 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
                 onOptionSelect(option);
                 break;
             case 'Escape':
-                closeDropdown();
-                onCloseWithEscape();
+                escapeFromDropdown();
+                break;
+            case 'Tab':
+                escapeFromDropdown();
                 break;
             default:
                 if (!isDropdownOpen) {
@@ -65,7 +72,7 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
                 }
                 break;
         }
-    }, [closeDropdown, isDropdownOpen, openDropdown, onCloseWithEscape, onOptionSelect, pointer, options])
+    }, [isDropdownOpen, openDropdown, escapeFromDropdown, onOptionSelect, pointer, options]);
 
     const toggle = useCallback(() => {
         if (isDropdownOpen && search.length) return;
@@ -75,18 +82,18 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
         } else {
             openDropdown()
         }
-    }, [closeDropdown, isDropdownOpen, openDropdown, search])
+    }, [closeDropdown, isDropdownOpen, openDropdown, search]);
 
 
     // Effects
 
     useEffect(() => {
         setPointer(options.length ? 0 : null);
-    }, [options])
+    }, [options]);
 
     useEffect(() => {
         closeDropdown();
-    }, [value, closeDropdown])
+    }, [value, closeDropdown]);
 
 
     return {
@@ -94,7 +101,8 @@ const useDropdown = ({ options, value, onOptionSelect, onCloseWithEscape, search
             isOpen: isDropdownOpen,
             open: openDropdown,
             close: closeDropdown,
-            toggle
+            toggle,
+            escape: escapeFromDropdown,
         },
         pointer: {
             position: pointer,

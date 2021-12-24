@@ -104,17 +104,18 @@ const Multiselect = _ref => {
     pointer,
     handleKeyDown
   } = (0, _useDropdown.default)({
-    onCloseWithEscape: blur,
+    onEscape: () => {
+      blur();
+      updateSearch('');
+    },
     onOptionSelect: handleOptionSelect,
     options: searchResults,
     search,
     value
   });
   const onOuterClick = (0, _react.useCallback)(() => {
-    dropdown.close();
-    blur();
-    updateSearch('');
-  }, [dropdown, blur, updateSearch]);
+    dropdown.escape();
+  }, [dropdown]);
   const onClick = (0, _react.useCallback)(() => {
     dropdown.toggle();
     focus();

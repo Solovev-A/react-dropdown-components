@@ -96,17 +96,18 @@ const Autocomplete = _ref => {
     pointer,
     handleKeyDown
   } = (0, _useDropdown.default)({
-    onCloseWithEscape: blur,
+    onEscape: () => {
+      blur();
+      updateSearch('');
+    },
     onOptionSelect: handleChange,
     options: options,
     search,
     value
   });
   const onOuterClick = (0, _react.useCallback)(() => {
-    dropdown.close();
-    blur();
-    updateSearch('');
-  }, [dropdown, blur, updateSearch]);
+    dropdown.escape();
+  }, [dropdown]);
   const onClick = (0, _react.useCallback)(() => {
     if (options.length && search.length > threshold) {
       dropdown.toggle();

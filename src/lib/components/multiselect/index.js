@@ -66,7 +66,10 @@ const Multiselect = ({
     }, [value, getOptionKey, handleChange])
 
     const { dropdown, pointer, handleKeyDown } = useDropdown({
-        onCloseWithEscape: blur,
+        onEscape: () => {
+            blur();
+            updateSearch('');
+        },
         onOptionSelect: handleOptionSelect,
         options: searchResults,
         search,
@@ -74,10 +77,8 @@ const Multiselect = ({
     });
 
     const onOuterClick = useCallback(() => {
-        dropdown.close();
-        blur();
-        updateSearch('');
-    }, [dropdown, blur, updateSearch])
+        dropdown.escape();
+    }, [dropdown])
 
     const onClick = useCallback(() => {
         dropdown.toggle();
