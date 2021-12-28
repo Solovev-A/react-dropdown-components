@@ -1,20 +1,13 @@
 {
   "files": {
-    "main.css": "/react-dropdown-components/static/css/main.de67d960.chunk.css",
-    "main.js": "/react-dropdown-components/static/js/main.95a535c2.chunk.js",
-    "main.js.map": "/react-dropdown-components/static/js/main.95a535c2.chunk.js.map",
-    "runtime-main.js": "/react-dropdown-components/static/js/runtime-main.d296d22d.js",
-    "runtime-main.js.map": "/react-dropdown-components/static/js/runtime-main.d296d22d.js.map",
-    "static/js/2.6a8daa7c.chunk.js": "/react-dropdown-components/static/js/2.6a8daa7c.chunk.js",
-    "static/js/2.6a8daa7c.chunk.js.map": "/react-dropdown-components/static/js/2.6a8daa7c.chunk.js.map",
+    "main.css": "/react-dropdown-components/static/css/main.94c2229a.css",
+    "main.js": "/react-dropdown-components/static/js/main.d99372bb.js",
     "index.html": "/react-dropdown-components/index.html",
-    "static/css/main.de67d960.chunk.css.map": "/react-dropdown-components/static/css/main.de67d960.chunk.css.map",
-    "static/js/2.6a8daa7c.chunk.js.LICENSE.txt": "/react-dropdown-components/static/js/2.6a8daa7c.chunk.js.LICENSE.txt"
+    "main.94c2229a.css.map": "/react-dropdown-components/static/css/main.94c2229a.css.map",
+    "main.d99372bb.js.map": "/react-dropdown-components/static/js/main.d99372bb.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.d296d22d.js",
-    "static/js/2.6a8daa7c.chunk.js",
-    "static/css/main.de67d960.chunk.css",
-    "static/js/main.95a535c2.chunk.js"
+    "static/css/main.94c2229a.css",
+    "static/js/main.d99372bb.js"
   ]
 }
