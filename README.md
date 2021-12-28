@@ -7,7 +7,12 @@
 ## Установка
 
 ```bash
-npm i --save solovev-a/react-dropdown-components
+npm install --save solovev-a/react-dropdown-components
+```
+
+Предполагается, что целевой проект использует некоторые зависимости:
+```bash
+npm install --save react react-dom styled-components
 ```
 
 Решение [известной проблемы](https://github.com/facebook/react/issues/13991) с использованием хуков в библиотеках компонентов:

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import { Autocomplete, Multiselect } from './lib/components';
-import { filterOptions } from './lib/utils';
-import { selectedOption, options } from './mockData'
+import { Autocomplete, Multiselect } from 'react-dropdown-components';
+import { selectedOption, options } from './mockData';
 
 
 const autocompleteThreshold = 3;
+
+const filterOptions = (options, search, getOptionValue = (item) => item) => {
+  const regExpSafeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const reg = new RegExp(regExpSafeSearch, 'i');
+  return options.filter(item => reg.test(getOptionValue(item)));
+}
 
 const App = () => {
   const [selected, setSelected] = useState([selectedOption]);
@@ -34,6 +39,8 @@ const App = () => {
     setAutocompleteLoading(true);
     // здесь может быть обращение к api
     const timer = setTimeout(() => {
+
+
       const newOptions = filterOptions(options, autocompleteSearch, getSearchValue);
       setAutocompleteOptions(newOptions);
       setAutocompleteLoading(false);
